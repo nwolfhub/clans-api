@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.3.10"
     kotlin("plugin.spring") version "2.3.10"
+    `maven-publish`
 }
 
 group = "org.nwolfhub.lib"
@@ -19,6 +20,14 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("org.wiremock:wiremock:3.13.2")
     implementation(kotlin("stdlib"))
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["kotlin"])
+        }
+    }
 }
 
 val demo by sourceSets.creating {
