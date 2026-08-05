@@ -9,117 +9,93 @@ import org.nwolfhub.lib.response.ClanWar
 import org.nwolfhub.lib.response.ClanWarLeagueGroup
 import org.nwolfhub.lib.response.ClanWarLogEntry
 
-class ClanRequest(
-    val clanTag: String,
-)
+fun ClashOfClans.clan(clanTag: String): Clan =
+    execute("GET", "/clans/${clanTag.tag()}", clazz = Clan::class.java)
 
-class ClanMembersRequest(
-    val clanTag: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class CurrentWarRequest(
-    val clanTag: String,
-)
-
-class ClanWarLogRequest(
-    val clanTag: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class ClanWarLeagueGroupRequest(
-    val clanTag: String,
-)
-
-class ClanWarLeagueWarRequest(
-    val warTag: String,
-)
-
-class CapitalRaidSeasonsRequest(
-    val clanTag: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class SearchClansRequest(
-    val name: String? = null,
-    val warFrequency: String? = null,
-    val locationId: Int? = null,
-    val minMembers: Int? = null,
-    val maxMembers: Int? = null,
-    val minClanPoints: Int? = null,
-    val minClanLevel: Int? = null,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-    val labelIds: String? = null,
-)
-
-fun ClashOfClans.clan(request: ClanRequest): Clan =
-    execute("GET", "/clans/${request.clanTag.tag()}", clazz = Clan::class.java)
-
-fun ClashOfClans.clanMembers(request: ClanMembersRequest): List<ClanMember> =
+fun ClashOfClans.clanMembers(
+    clanTag: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<ClanMember> =
     executeList(
         "GET",
-        "/clans/${request.clanTag.tag()}/members",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/clans/${clanTag.tag()}/members",
+        queryParams(page(limit, after, before)),
         elementClass = ClanMember::class.java,
     )
 
-fun ClashOfClans.currentWar(request: CurrentWarRequest): ClanWar =
-    execute("GET", "/clans/${request.clanTag.tag()}/currentwar", clazz = ClanWar::class.java)
+fun ClashOfClans.currentWar(clanTag: String): ClanWar =
+    execute("GET", "/clans/${clanTag.tag()}/currentwar", clazz = ClanWar::class.java)
 
-fun ClashOfClans.clanWarLog(request: ClanWarLogRequest): List<ClanWarLogEntry> =
+fun ClashOfClans.clanWarLog(
+    clanTag: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<ClanWarLogEntry> =
     executeList(
         "GET",
-        "/clans/${request.clanTag.tag()}/warlog",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/clans/${clanTag.tag()}/warlog",
+        queryParams(page(limit, after, before)),
         elementClass = ClanWarLogEntry::class.java,
     )
 
-fun ClashOfClans.clanWarLeagueGroup(request: ClanWarLeagueGroupRequest): ClanWarLeagueGroup =
+fun ClashOfClans.clanWarLeagueGroup(clanTag: String): ClanWarLeagueGroup =
     execute(
         "GET",
-        "/clans/${request.clanTag.tag()}/currentwar/leaguegroup",
+        "/clans/${clanTag.tag()}/currentwar/leaguegroup",
         clazz = ClanWarLeagueGroup::class.java,
     )
 
-fun ClashOfClans.clanWarLeagueWar(request: ClanWarLeagueWarRequest): ClanWarLeagueGroup =
+fun ClashOfClans.clanWarLeagueWar(warTag: String): ClanWarLeagueGroup =
     execute(
         "GET",
-        "/clanwarleagues/wars/${request.warTag.tag()}",
+        "/clanwarleagues/wars/${warTag.tag()}",
         clazz = ClanWarLeagueGroup::class.java,
     )
 
-fun ClashOfClans.capitalRaidSeasons(request: CapitalRaidSeasonsRequest): List<ClanCapitalRaidSeason> =
+fun ClashOfClans.capitalRaidSeasons(
+    clanTag: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<ClanCapitalRaidSeason> =
     executeList(
         "GET",
-        "/clans/${request.clanTag.tag()}/capitalraidseasons",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/clans/${clanTag.tag()}/capitalraidseasons",
+        queryParams(page(limit, after, before)),
         elementClass = ClanCapitalRaidSeason::class.java,
     )
 
-fun ClashOfClans.searchClans(request: SearchClansRequest): List<Clan> =
+fun ClashOfClans.searchClans(
+    name: String? = null,
+    warFrequency: String? = null,
+    locationId: Int? = null,
+    minMembers: Int? = null,
+    maxMembers: Int? = null,
+    minClanPoints: Int? = null,
+    minClanLevel: Int? = null,
+    labelIds: String? = null,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<Clan> =
     executeList(
         "GET",
         "/clans",
         queryParams(
             listOfNotNull(
-                request.name?.let { "name" to it },
-                request.warFrequency?.let { "warFrequency" to it },
-                request.locationId?.let { "locationId" to it.toString() },
-                request.minMembers?.let { "minMembers" to it.toString() },
-                request.maxMembers?.let { "maxMembers" to it.toString() },
-                request.minClanPoints?.let { "minClanPoints" to it.toString() },
-                request.minClanLevel?.let { "minClanLevel" to it.toString() },
-                request.labelIds?.let { "labelIds" to it },
+                name?.let { "name" to it },
+                warFrequency?.let { "warFrequency" to it },
+                locationId?.let { "locationId" to it.toString() },
+                minMembers?.let { "minMembers" to it.toString() },
+                maxMembers?.let { "maxMembers" to it.toString() },
+                minClanPoints?.let { "minClanPoints" to it.toString() },
+                minClanLevel?.let { "minClanLevel" to it.toString() },
+                labelIds?.let { "labelIds" to it },
             ).toMap(),
-            page(request.limit, request.after, request.before),
+            page(limit, after, before),
         ),
         elementClass = Clan::class.java,
     )

@@ -17,6 +17,13 @@ dependencies {
     testImplementation("org.wiremock:wiremock:3.13.2")
 }
 
+val demo by sourceSets.creating {
+    compileClasspath += sourceSets.main.get().output
+    runtimeClasspath += sourceSets.main.get().output
+}
+
+configurations[demo.implementationConfigurationName].extendsFrom(configurations.implementation.get())
+
 kotlin {
     jvmToolchain(21)
 }

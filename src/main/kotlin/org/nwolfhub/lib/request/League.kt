@@ -11,125 +11,86 @@ import org.nwolfhub.lib.response.LeagueTier
 import org.nwolfhub.lib.response.PlayerRanking
 import org.nwolfhub.lib.response.WarLeague
 
-class LeagueRequest(
-    val leagueId: String,
-)
+fun ClashOfClans.league(leagueId: String): League =
+    execute("GET", "/leagues/$leagueId", clazz = League::class.java)
 
-class LeagueTierRequest(
-    val leagueTierId: String,
-)
+fun ClashOfClans.leagues(
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<League> =
+    executeList("GET", "/leagues", queryParams(page(limit, after, before)), elementClass = League::class.java)
 
-class LeaguesRequest(
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
+fun ClashOfClans.leagueTier(leagueTierId: String): LeagueTier =
+    execute("GET", "/leaguetiers/$leagueTierId", clazz = LeagueTier::class.java)
 
-class LeagueTiersRequest(
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
+fun ClashOfClans.leagueTiers(
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<LeagueTier> =
+    executeList("GET", "/leaguetiers", queryParams(page(limit, after, before)), elementClass = LeagueTier::class.java)
 
-class CapitalLeagueRequest(
-    val leagueId: String,
-)
+fun ClashOfClans.capitalLeague(leagueId: String): CapitalLeague =
+    execute("GET", "/capitalleagues/$leagueId", clazz = CapitalLeague::class.java)
 
-class CapitalLeaguesRequest(
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
+fun ClashOfClans.capitalLeagues(
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<CapitalLeague> =
+    executeList("GET", "/capitalleagues", queryParams(page(limit, after, before)), elementClass = CapitalLeague::class.java)
 
-class BuilderBaseLeagueRequest(
-    val leagueId: String,
-)
+fun ClashOfClans.builderBaseLeague(leagueId: String): BuilderBaseLeague =
+    execute("GET", "/builderbaseleagues/$leagueId", clazz = BuilderBaseLeague::class.java)
 
-class BuilderBaseLeaguesRequest(
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
+fun ClashOfClans.builderBaseLeagues(
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<BuilderBaseLeague> =
+    executeList("GET", "/builderbaseleagues", queryParams(page(limit, after, before)), elementClass = BuilderBaseLeague::class.java)
 
-class WarLeagueRequest(
-    val leagueId: String,
-)
+fun ClashOfClans.warLeague(leagueId: String): WarLeague =
+    execute("GET", "/warleagues/$leagueId", clazz = WarLeague::class.java)
 
-class WarLeaguesRequest(
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
+fun ClashOfClans.warLeagues(
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<WarLeague> =
+    executeList("GET", "/warleagues", queryParams(page(limit, after, before)), elementClass = WarLeague::class.java)
 
-class LeagueSeasonsRequest(
-    val leagueId: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class LeagueSeasonRankingsRequest(
-    val leagueId: String,
-    val seasonId: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class LeagueGroupRequest(
-    val leagueGroupTag: String,
-    val leagueSeasonId: String,
-)
-
-fun ClashOfClans.league(request: LeagueRequest): League =
-    execute("GET", "/leagues/${request.leagueId}", clazz = League::class.java)
-
-fun ClashOfClans.leagues(request: LeaguesRequest): List<League> =
-    executeList("GET", "/leagues", queryParams(page(request.limit, request.after, request.before)), elementClass = League::class.java)
-
-fun ClashOfClans.leagueTier(request: LeagueTierRequest): LeagueTier =
-    execute("GET", "/leaguetiers/${request.leagueTierId}", clazz = LeagueTier::class.java)
-
-fun ClashOfClans.leagueTiers(request: LeagueTiersRequest): List<LeagueTier> =
-    executeList("GET", "/leaguetiers", queryParams(page(request.limit, request.after, request.before)), elementClass = LeagueTier::class.java)
-
-fun ClashOfClans.capitalLeague(request: CapitalLeagueRequest): CapitalLeague =
-    execute("GET", "/capitalleagues/${request.leagueId}", clazz = CapitalLeague::class.java)
-
-fun ClashOfClans.capitalLeagues(request: CapitalLeaguesRequest): List<CapitalLeague> =
-    executeList("GET", "/capitalleagues", queryParams(page(request.limit, request.after, request.before)), elementClass = CapitalLeague::class.java)
-
-fun ClashOfClans.builderBaseLeague(request: BuilderBaseLeagueRequest): BuilderBaseLeague =
-    execute("GET", "/builderbaseleagues/${request.leagueId}", clazz = BuilderBaseLeague::class.java)
-
-fun ClashOfClans.builderBaseLeagues(request: BuilderBaseLeaguesRequest): List<BuilderBaseLeague> =
-    executeList("GET", "/builderbaseleagues", queryParams(page(request.limit, request.after, request.before)), elementClass = BuilderBaseLeague::class.java)
-
-fun ClashOfClans.warLeague(request: WarLeagueRequest): WarLeague =
-    execute("GET", "/warleagues/${request.leagueId}", clazz = WarLeague::class.java)
-
-fun ClashOfClans.warLeagues(request: WarLeaguesRequest): List<WarLeague> =
-    executeList("GET", "/warleagues", queryParams(page(request.limit, request.after, request.before)), elementClass = WarLeague::class.java)
-
-fun ClashOfClans.leagueSeasons(request: LeagueSeasonsRequest): List<LeagueSeason> =
+fun ClashOfClans.leagueSeasons(
+    leagueId: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<LeagueSeason> =
     executeList(
         "GET",
-        "/leagues/${request.leagueId}/seasons",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/leagues/$leagueId/seasons",
+        queryParams(page(limit, after, before)),
         elementClass = LeagueSeason::class.java,
     )
 
-fun ClashOfClans.leagueSeasonRankings(request: LeagueSeasonRankingsRequest): List<PlayerRanking> =
+fun ClashOfClans.leagueSeasonRankings(
+    leagueId: String,
+    seasonId: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<PlayerRanking> =
     executeList(
         "GET",
-        "/leagues/${request.leagueId}/seasons/${request.seasonId}",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/leagues/$leagueId/seasons/$seasonId",
+        queryParams(page(limit, after, before)),
         elementClass = PlayerRanking::class.java,
     )
 
-fun ClashOfClans.leagueGroup(request: LeagueGroupRequest): LeagueGroup =
+fun ClashOfClans.leagueGroup(leagueGroupTag: String, leagueSeasonId: String): LeagueGroup =
     execute(
         "GET",
-        "/leaguegroup/${request.leagueGroupTag.tag()}/${request.leagueSeasonId}",
+        "/leaguegroup/${leagueGroupTag.tag()}/$leagueSeasonId",
         clazz = LeagueGroup::class.java,
     )

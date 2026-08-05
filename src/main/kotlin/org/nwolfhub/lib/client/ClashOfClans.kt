@@ -1,7 +1,8 @@
 package org.nwolfhub.lib.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.databind.json.JsonMapper
+import com.fasterxml.jackson.module.kotlin.jsonMapper
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -19,7 +20,7 @@ class ClashOfClans(
 
     private val client: OkHttpClient = OkHttpClient()
 
-    internal val json: ObjectMapper = jacksonObjectMapper()
+    internal val json: ObjectMapper = JsonMapper.Builder(jsonMapper()).build() //todo: migrate to jackson 3. I thought I hated the spring migration enough
 
     fun <T : ClashResponse> execute(
         method: String,

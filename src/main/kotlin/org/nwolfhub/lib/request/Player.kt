@@ -7,52 +7,39 @@ import org.nwolfhub.lib.response.LeagueSeasonResult
 import org.nwolfhub.lib.response.Player
 import org.nwolfhub.lib.response.VerifyTokenResponse
 
-class PlayerRequest(
-    val playerTag: String,
-)
+fun ClashOfClans.player(playerTag: String): Player =
+    execute("GET", "/players/${playerTag.tag()}", clazz = Player::class.java)
 
-class BattleLogRequest(
-    val playerTag: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class LeagueHistoryRequest(
-    val playerTag: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class VerifyTokenRequest(
-    val playerTag: String,
-    val token: String,
-)
-
-fun ClashOfClans.player(request: PlayerRequest): Player =
-    execute("GET", "/players/${request.playerTag.tag()}", clazz = Player::class.java)
-
-fun ClashOfClans.battleLog(request: BattleLogRequest): List<BattleLogEntry> =
+fun ClashOfClans.battleLog(
+    playerTag: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<BattleLogEntry> =
     executeList(
         "GET",
-        "/players/${request.playerTag.tag()}/battlelog",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/players/${playerTag.tag()}/battlelog",
+        queryParams(page(limit, after, before)),
         elementClass = BattleLogEntry::class.java,
     )
 
-fun ClashOfClans.leagueHistory(request: LeagueHistoryRequest): List<LeagueSeasonResult> =
+fun ClashOfClans.leagueHistory(
+    playerTag: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<LeagueSeasonResult> =
     executeList(
         "GET",
-        "/players/${request.playerTag.tag()}/leaguehistory",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/players/${playerTag.tag()}/leaguehistory",
+        queryParams(page(limit, after, before)),
         elementClass = LeagueSeasonResult::class.java,
     )
 
-fun ClashOfClans.verifyToken(request: VerifyTokenRequest): VerifyTokenResponse =
+fun ClashOfClans.verifyToken(playerTag: String, token: String): VerifyTokenResponse =
     execute(
         "POST",
-        "/players/${request.playerTag.tag()}/verifytoken",
-        body = jsonBody(mapOf("token" to request.token)),
+        "/players/${playerTag.tag()}/verifytoken",
+        body = jsonBody(mapOf("token" to token)),
         clazz = VerifyTokenResponse::class.java,
     )

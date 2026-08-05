@@ -8,93 +8,77 @@ import org.nwolfhub.lib.response.Location
 import org.nwolfhub.lib.response.PlayerBuilderBaseRanking
 import org.nwolfhub.lib.response.PlayerRanking
 
-class LocationRequest(
-    val locationId: String,
-)
+fun ClashOfClans.location(locationId: String): Location =
+    execute("GET", "/locations/$locationId", clazz = Location::class.java)
 
-class LocationsRequest(
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
+fun ClashOfClans.locations(
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<Location> =
+    executeList("GET", "/locations", queryParams(page(limit, after, before)), elementClass = Location::class.java)
 
-class ClanRankingRequest(
-    val locationId: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class PlayerRankingRequest(
-    val locationId: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class PlayerBuilderBaseRankingRequest(
-    val locationId: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class ClanBuilderBaseRankingRequest(
-    val locationId: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-class ClanCapitalRankingRequest(
-    val locationId: String,
-    val limit: Int? = null,
-    val after: String? = null,
-    val before: String? = null,
-)
-
-fun ClashOfClans.location(request: LocationRequest): Location =
-    execute("GET", "/locations/${request.locationId}", clazz = Location::class.java)
-
-fun ClashOfClans.locations(request: LocationsRequest): List<Location> =
-    executeList("GET", "/locations", queryParams(page(request.limit, request.after, request.before)), elementClass = Location::class.java)
-
-fun ClashOfClans.clanRanking(request: ClanRankingRequest): List<ClanRanking> =
+fun ClashOfClans.clanRanking(
+    locationId: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<ClanRanking> =
     executeList(
         "GET",
-        "/locations/${request.locationId}/rankings/clans",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/locations/$locationId/rankings/clans",
+        queryParams(page(limit, after, before)),
         elementClass = ClanRanking::class.java,
     )
 
-fun ClashOfClans.playerRanking(request: PlayerRankingRequest): List<PlayerRanking> =
+fun ClashOfClans.playerRanking(
+    locationId: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<PlayerRanking> =
     executeList(
         "GET",
-        "/locations/${request.locationId}/rankings/players",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/locations/$locationId/rankings/players",
+        queryParams(page(limit, after, before)),
         elementClass = PlayerRanking::class.java,
     )
 
-fun ClashOfClans.playerBuilderBaseRanking(request: PlayerBuilderBaseRankingRequest): List<PlayerBuilderBaseRanking> =
+fun ClashOfClans.playerBuilderBaseRanking(
+    locationId: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<PlayerBuilderBaseRanking> =
     executeList(
         "GET",
-        "/locations/${request.locationId}/rankings/players-builder-base",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/locations/$locationId/rankings/players-builder-base",
+        queryParams(page(limit, after, before)),
         elementClass = PlayerBuilderBaseRanking::class.java,
     )
 
-fun ClashOfClans.clanBuilderBaseRanking(request: ClanBuilderBaseRankingRequest): List<ClanBuilderBaseRanking> =
+fun ClashOfClans.clanBuilderBaseRanking(
+    locationId: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<ClanBuilderBaseRanking> =
     executeList(
         "GET",
-        "/locations/${request.locationId}/rankings/clans-builder-base",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/locations/$locationId/rankings/clans-builder-base",
+        queryParams(page(limit, after, before)),
         elementClass = ClanBuilderBaseRanking::class.java,
     )
 
-fun ClashOfClans.clanCapitalRanking(request: ClanCapitalRankingRequest): List<ClanCapitalRanking> =
+fun ClashOfClans.clanCapitalRanking(
+    locationId: String,
+    limit: Int? = null,
+    after: String? = null,
+    before: String? = null,
+): List<ClanCapitalRanking> =
     executeList(
         "GET",
-        "/locations/${request.locationId}/rankings/capitals",
-        queryParams(page(request.limit, request.after, request.before)),
+        "/locations/$locationId/rankings/capitals",
+        queryParams(page(limit, after, before)),
         elementClass = ClanCapitalRanking::class.java,
     )
