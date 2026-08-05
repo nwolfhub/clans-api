@@ -41,12 +41,12 @@ data class League(
 ) : ClashResponse()
 
 data class CapitalLeague(
-    val name: JsonLocalizedName? = null,
+    val name: String? = null,
     val id: Int? = null,
 ) : ClashResponse()
 
 data class WarLeague(
-    val name: JsonLocalizedName? = null,
+    val name: String? = null,
     val id: Int? = null,
 ) : ClashResponse()
 

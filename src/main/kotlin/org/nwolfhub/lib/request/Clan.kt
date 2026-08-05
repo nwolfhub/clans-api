@@ -1,6 +1,7 @@
 package org.nwolfhub.lib.request
 
 import org.nwolfhub.lib.client.ClashOfClans
+import org.nwolfhub.lib.tag
 import org.nwolfhub.lib.response.Clan
 import org.nwolfhub.lib.response.ClanCapitalRaidSeason
 import org.nwolfhub.lib.response.ClanMember
@@ -60,23 +61,23 @@ class SearchClansRequest(
 )
 
 fun ClashOfClans.clan(request: ClanRequest): Clan =
-    execute("GET", "/clans/${request.clanTag}", clazz = Clan::class.java)
+    execute("GET", "/clans/${request.clanTag.tag()}", clazz = Clan::class.java)
 
 fun ClashOfClans.clanMembers(request: ClanMembersRequest): List<ClanMember> =
     executeList(
         "GET",
-        "/clans/${request.clanTag}/members",
+        "/clans/${request.clanTag.tag()}/members",
         queryParams(page(request.limit, request.after, request.before)),
         elementClass = ClanMember::class.java,
     )
 
 fun ClashOfClans.currentWar(request: CurrentWarRequest): ClanWar =
-    execute("GET", "/clans/${request.clanTag}/currentwar", clazz = ClanWar::class.java)
+    execute("GET", "/clans/${request.clanTag.tag()}/currentwar", clazz = ClanWar::class.java)
 
 fun ClashOfClans.clanWarLog(request: ClanWarLogRequest): List<ClanWarLogEntry> =
     executeList(
         "GET",
-        "/clans/${request.clanTag}/warlog",
+        "/clans/${request.clanTag.tag()}/warlog",
         queryParams(page(request.limit, request.after, request.before)),
         elementClass = ClanWarLogEntry::class.java,
     )
@@ -84,21 +85,21 @@ fun ClashOfClans.clanWarLog(request: ClanWarLogRequest): List<ClanWarLogEntry> =
 fun ClashOfClans.clanWarLeagueGroup(request: ClanWarLeagueGroupRequest): ClanWarLeagueGroup =
     execute(
         "GET",
-        "/clans/${request.clanTag}/currentwar/leaguegroup",
+        "/clans/${request.clanTag.tag()}/currentwar/leaguegroup",
         clazz = ClanWarLeagueGroup::class.java,
     )
 
 fun ClashOfClans.clanWarLeagueWar(request: ClanWarLeagueWarRequest): ClanWarLeagueGroup =
     execute(
         "GET",
-        "/clanwarleagues/wars/${request.warTag}",
+        "/clanwarleagues/wars/${request.warTag.tag()}",
         clazz = ClanWarLeagueGroup::class.java,
     )
 
 fun ClashOfClans.capitalRaidSeasons(request: CapitalRaidSeasonsRequest): List<ClanCapitalRaidSeason> =
     executeList(
         "GET",
-        "/clans/${request.clanTag}/capitalraidseasons",
+        "/clans/${request.clanTag.tag()}/capitalraidseasons",
         queryParams(page(request.limit, request.after, request.before)),
         elementClass = ClanCapitalRaidSeason::class.java,
     )

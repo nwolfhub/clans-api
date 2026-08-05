@@ -1,6 +1,7 @@
 package org.nwolfhub.lib.request
 
 import org.nwolfhub.lib.client.ClashOfClans
+import org.nwolfhub.lib.tag
 import org.nwolfhub.lib.response.BuilderBaseLeague
 import org.nwolfhub.lib.response.CapitalLeague
 import org.nwolfhub.lib.response.League
@@ -129,6 +130,6 @@ fun ClashOfClans.leagueSeasonRankings(request: LeagueSeasonRankingsRequest): Lis
 fun ClashOfClans.leagueGroup(request: LeagueGroupRequest): LeagueGroup =
     execute(
         "GET",
-        "/leaguegroup/${request.leagueGroupTag}/${request.leagueSeasonId}",
+        "/leaguegroup/${request.leagueGroupTag.tag()}/${request.leagueSeasonId}",
         clazz = LeagueGroup::class.java,
     )

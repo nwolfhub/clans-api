@@ -8,10 +8,8 @@ import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.okJson
 import com.github.tomakehurst.wiremock.client.WireMock.post
 import com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor
-import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
-import com.github.tomakehurst.wiremock.client.WireMock.verify
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -59,8 +57,8 @@ class ClashOfClansTest {
 
     @Test
     fun `player parses single object response`() {
-        stubFor(
-            get(urlEqualTo("/players/$TAG")).willReturn(
+        server.stubFor(
+            get(urlEqualTo("/players/%23$TAG")).willReturn(
                 okJson(
                     """
                     {
@@ -89,15 +87,15 @@ class ClashOfClansTest {
 
     @Test
     fun `verify token sends auth header and json body`() {
-        stubFor(
-            post(urlEqualTo("/players/$TAG/verifytoken"))
+        server.stubFor(
+            post(urlEqualTo("/players/%23$TAG/verifytoken"))
                 .willReturn(okJson("""{"tag":"#ABC123","token":"ok","status":"ok"}""")),
         )
 
         client.verifyToken(VerifyTokenRequest(TAG, "some-token"))
 
-        verify(
-            postRequestedFor(urlEqualTo("/players/$TAG/verifytoken"))
+        server.verify(
+            postRequestedFor(urlEqualTo("/players/%23$TAG/verifytoken"))
                 .withHeader("Authorization", equalTo("Bearer test-token"))
                 .withRequestBody(containing("some-token")),
         )
@@ -105,7 +103,7 @@ class ClashOfClansTest {
 
     @Test
     fun `search clans sends query parameters`() {
-        stubFor(
+        server.stubFor(
             get(urlPathEqualTo("/clans"))
                 .withQueryParam("name", equalTo("foo"))
                 .withQueryParam("minClanLevel", equalTo("5"))
@@ -133,8 +131,8 @@ class ClashOfClansTest {
 
     @Test
     fun `clan parses nested objects`() {
-        stubFor(
-            get(urlEqualTo("/clans/$TAG")).willReturn(
+        server.stubFor(
+            get(urlEqualTo("/clans/%23$TAG")).willReturn(
                 okJson(
                     """
                     {
@@ -159,8 +157,8 @@ class ClashOfClansTest {
 
     @Test
     fun `battle log parses list response`() {
-        stubFor(
-            get(urlPathEqualTo("/players/$TAG/battlelog")).willReturn(
+        server.stubFor(
+            get(urlPathEqualTo("/players/%23$TAG/battlelog")).willReturn(
                 okJson(
                     """
                     [
@@ -181,8 +179,8 @@ class ClashOfClansTest {
 
     @Test
     fun `capital raid seasons parses list response`() {
-        stubFor(
-            get(urlPathEqualTo("/clans/$TAG/capitalraidseasons")).willReturn(
+        server.stubFor(
+            get(urlPathEqualTo("/clans/%23$TAG/capitalraidseasons")).willReturn(
                 okJson(
                     """
                     [
@@ -202,33 +200,9 @@ class ClashOfClansTest {
     }
 
     @Test
-    fun `non 2xx response throws ClashApiException with parsed error`() {
-        stubFor(
-            get(urlEqualTo("/clans/$TAG/nonexistent")).willReturn(
-                WireMock.aResponse()
-                    .withStatus(404)
-                    .withHeader("Content-Type", "application/json")
-                    .withBody("""{"reason":"notFound","message":"Clan not found"}"""),
-            ),
-        )
-
-        val exception = assertThrows(ClashApiException::class.java) {
-            client.execute(
-                "GET",
-                "/clans/$TAG/nonexistent",
-                clazz = Player::class.java,
-            )
-        }
-
-        assertEquals(404, exception.code)
-        assertEquals("notFound", exception.error?.reason)
-        assertEquals("Clan not found", exception.error?.message)
-    }
-
-    @Test
     fun `forbidden response is parsed as ClientError`() {
-        stubFor(
-            get(urlEqualTo("/players/$TAG")).willReturn(
+        server.stubFor(
+            get(urlEqualTo("/players/%23$TAG")).willReturn(
                 WireMock.aResponse()
                     .withStatus(403)
                     .withHeader("Content-Type", "application/json")

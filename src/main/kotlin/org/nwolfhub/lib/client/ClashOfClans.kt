@@ -70,7 +70,10 @@ class ClashOfClans(
         queryParams: Map<String, String>,
         body: RequestBody?,
     ): Request {
-        val urlBuilder = "$baseUrl$path".toHttpUrlOrNull()!!.newBuilder()
+        val urlBuilder = baseUrl.toHttpUrlOrNull()!!.newBuilder()
+        path.removePrefix("/").split("/").forEach { segment ->
+            if (segment.isNotEmpty()) urlBuilder.addPathSegment(segment)
+        }
         for ((key, value) in queryParams) {
             urlBuilder.addQueryParameter(key, value)
         }
