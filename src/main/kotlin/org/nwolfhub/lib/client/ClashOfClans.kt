@@ -18,9 +18,9 @@ class ClashOfClans(
 ) {
     var baseUrl: String = "https://api.clashofclans.com/v1"
 
-    private val client: OkHttpClient = OkHttpClient()
+    internal var client: OkHttpClient = OkHttpClient()
 
-    internal val json: ObjectMapper = JsonMapper.Builder(jsonMapper()).build() //todo: migrate to jackson 3. I thought I hated the spring migration enough
+    internal var json: ObjectMapper = JsonMapper.Builder(jsonMapper()).build() //todo: migrate to jackson 3. I thought I hated the spring migration enough
 
     fun <T : ClashResponse> execute(
         method: String,
