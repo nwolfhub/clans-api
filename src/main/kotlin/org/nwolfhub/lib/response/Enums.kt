@@ -136,3 +136,10 @@ enum class Village {
     @JsonProperty("clanCapital")
     CLAN_CAPITAL,
 }
+
+enum class TokenVerificationStatus {
+    @JsonProperty("invalid")
+    INVALID,
+    @JsonProperty("ok")
+    OK
+}

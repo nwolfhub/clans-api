@@ -87,5 +87,5 @@ data class VerifyTokenRequest(
 data class VerifyTokenResponse(
     val tag: String? = null,
     val token: String? = null,
-    val status: String? = null,
+    val status: TokenVerificationStatus? = null,
 ) : ClashResponse()
