@@ -1,5 +1,7 @@
 package org.nwolfhub.lib.response
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class JsonLocalizedName(
     val name: String? = null,
 ) : ClashResponse()
@@ -63,10 +65,15 @@ data class Label(
 ) : ClashResponse()
 
 data class Location(
+    @JsonProperty("localizedName")
     val localizedName: String? = null,
+    @JsonProperty("id")
     val id: Int? = null,
+    @JsonProperty("name")
     val name: String? = null,
+    @JsonProperty("isCountry")
     val isCountry: Boolean? = null,
+    @JsonProperty("countryCode")
     val countryCode: String? = null,
 ) : ClashResponse()
 

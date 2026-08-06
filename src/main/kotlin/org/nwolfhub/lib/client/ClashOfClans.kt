@@ -1,5 +1,6 @@
 package org.nwolfhub.lib.client
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.module.kotlin.jsonMapper
@@ -20,7 +21,9 @@ class ClashOfClans(
 
     internal var client: OkHttpClient = OkHttpClient()
 
-    internal var json: ObjectMapper = JsonMapper.Builder(jsonMapper()).build() //todo: migrate to jackson 3. I thought I hated the spring migration enough
+    internal var json: ObjectMapper = JsonMapper.Builder(jsonMapper())
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        .build() //todo: migrate to jackson 3. I thought I hated the spring migration enough
 
     fun <T : ClashResponse> execute(
         method: String,
