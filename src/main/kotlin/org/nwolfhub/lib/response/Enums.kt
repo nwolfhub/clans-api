@@ -115,7 +115,7 @@ enum class ClanWarLeagueGroupState {
     NOT_IN_WAR,
     @JsonProperty("preparation")
     PREPARATION,
-    @JsonProperty("war")
+    @JsonProperty("inWar")
     WAR,
     @JsonProperty("ended")
     ENDED,
