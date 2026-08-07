@@ -29,6 +29,6 @@ fun main() {
     val members = client.clanMembers("#2J0Y0RP2J")
     println(members.size)
 
-    val group = client.clanWarLeagueGroup("2J0Y0RP2J")
+    val group = client.clanWarLeagueWar("#8GJ0LP0QR")
     println(group)
 }

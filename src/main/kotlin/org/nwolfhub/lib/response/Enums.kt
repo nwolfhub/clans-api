@@ -1,5 +1,6 @@
 package org.nwolfhub.lib.response
 
+import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonProperty
 
 enum class WarState {
@@ -21,7 +22,7 @@ enum class WarState {
     WAR,
     @JsonProperty("inWar")
     IN_WAR,
-    @JsonProperty("ended")
+    @JsonProperty("warEnded")
     ENDED,
 }
 
@@ -118,6 +119,7 @@ enum class ClanWarLeagueGroupState {
     @JsonProperty("inWar")
     WAR,
     @JsonProperty("ended")
+    @JsonAlias("warEnded")
     ENDED,
 }
 
