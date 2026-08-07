@@ -13,6 +13,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.nwolfhub.lib.response.ClashApiException
 import org.nwolfhub.lib.response.ClashResponse
 import org.nwolfhub.lib.response.ClientError
+import org.nwolfhub.lib.response.PagedResponse
 
 class ClashOfClans(
     private val token: String,
@@ -49,8 +50,9 @@ class ClashOfClans(
     ): List<T> {
         val (_, raw) = perform(method, path, queryParams, body)
 
-        val type = json.typeFactory.constructCollectionType(MutableList::class.java, elementClass)
-        return json.readValue(raw, type)
+        val pageType = json.typeFactory.constructParametricType(PagedResponse::class.java, elementClass)
+        val paged: PagedResponse<T> = json.readValue(raw, pageType)
+        return paged.items
     }
 
     internal fun jsonBody(value: Any): RequestBody =
