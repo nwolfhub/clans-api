@@ -48,11 +48,11 @@ fun ClashOfClans.clanWarLeagueGroup(clanTag: String): ClanWarLeagueGroup =
         clazz = ClanWarLeagueGroup::class.java,
     )
 
-fun ClashOfClans.clanWarLeagueWar(warTag: String): ClanWarLeagueGroup =
+fun ClashOfClans.clanWarLeagueWar(warTag: String): ClanWar =
     execute(
         "GET",
         "/clanwarleagues/wars/${warTag.tag()}",
-        clazz = ClanWarLeagueGroup::class.java,
+        clazz = ClanWar::class.java,
     )
 
 fun ClashOfClans.capitalRaidSeasons(
